@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.List;
+
 class Solution {
  public static int solution(int[] priorities, int location) {
         int answer = 0;
@@ -7,11 +7,8 @@ class Solution {
         for (int priority : priorities) {
             list.add(priority);
         }
-        //찾으려는 숫자
+
         int find=list.get(location);
-
-        //찾으려는 숫자보다 큰 숫자 찾기
-
         while(true){
             int max=find;
             for (Integer integer : list) {
@@ -19,11 +16,8 @@ class Solution {
                     max=integer;
                 }
             }
-            //최댓값의 index찾기
+
             int indexed = list.indexOf(max);
-
-
-            //맨앞에 max가 아닐때
             if(max!=list.peek()) {
 
                 list.remove(location);
@@ -45,7 +39,6 @@ class Solution {
                         min++;
                     }
                 }
-                System.out.println("min = " + min);
                 answer += location - min+1;
                 if(answer==0){
                     answer=1;
@@ -53,13 +46,10 @@ class Solution {
                 break;
             }
 
-
             list.remove();
             location--;
             answer++;
-
         }
-
 
         return answer;
     }
