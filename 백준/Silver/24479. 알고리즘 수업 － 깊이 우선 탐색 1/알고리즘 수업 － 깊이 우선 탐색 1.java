@@ -1,7 +1,9 @@
+
+
 import java.io.*;
 import java.util.*;
 
-class Main {
+public class Main {
     final static int MAX=1000000+10;
 
     static ArrayList<Integer>[] graph2;
