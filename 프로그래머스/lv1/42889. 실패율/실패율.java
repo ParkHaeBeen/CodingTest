@@ -1,32 +1,74 @@
 import java.util.*;
 class Solution {
-    public int[] solution(int N, int[] stages) {
-        Map<Integer, Double> map = new HashMap<>();
-        for (int i = 1; i <= N; i++) {
-            double total = 0;
-            double fail = 0;
-            for (int j = 0; j < stages.length; j++) {
-                if(i <= stages[j]) total++;
-                if(i == stages[j]) fail++;
+     public static int[] solution(int N, int[] stages) {
+        int[] result=new int[N];
+        ArrayDeque<Integer> list=new ArrayDeque<>();
+        Arrays.sort(stages);
+        for (int stage : stages) {
+            list.add(stage);
+        }
+
+        List<Game> list2=new ArrayList<>();
+        int idx=1;
+        while(idx<=N){
+            if(idx>N){
+                break;
             }
-            if(total == 0 && fail == 0) total = 1;
-            map.put(i, fail/total);
+            //System.out.println(list.getFirst());
+            if(list.isEmpty()||idx!=list.getFirst()){
+                list2.add(new Game(idx,0));
+            } else if(idx==list.getFirst()) {
+                int all = list.size();
+                int stage = list.pollFirst();
+                int count = 1;
+                while (!list.isEmpty()&&list.getFirst() == stage) {
+                    Integer integer = list.pollFirst();
+                    count++;
+
+                }
+                list2.add(new Game(stage, (double) count / all));
+
+            }
+            idx++;
+        }
+
+        Collections.sort(list2);
+
+
+        for (int i=0;i<result.length;i++) {
+            result[i]=list2.get(i).getStage();
+        }
+
+        return result;
+    }
+}
+class Game implements Comparable<Game>{
+    int stage;
+    double fail;
+
+    public int getStage() {
+        return stage;
+    }
+
+    public double getFail() {
+        return fail;
+    }
+
+    public Game(int stage, double fail) {
+        this.stage = stage;
+        this.fail = fail;
+    }
+
+    @Override
+    public int compareTo(Game o) {
+        if (fail > o.fail ) {
+            return -1;
         }
         
-            int[] answer = new int[N];
-    for (int i = 0; i < N; i++) {
-        double max = -1;
-        int rKey = 0;
-        for (int key : map.keySet()){
-            if(max < map.get(key)){
-                max = map.get(key);
-                rKey = key;
-            }
+        if (fail < o.fail ) {
+            return 1;
         }
-        answer[i] = rKey;
-        map.remove(rKey);
+        return Integer.compare(stage, o.stage);
     }
-        
-        return answer;
-    }
+    
 }
