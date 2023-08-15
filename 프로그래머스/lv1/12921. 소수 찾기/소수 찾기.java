@@ -1,30 +1,21 @@
 class Solution {
     public int solution(int n) {
-        if (n < 2) {
-            return 0;
-        }
-
-        boolean[] isPrime = new boolean[n + 1];
-        for (int i = 2; i <= n; i++) {
-            isPrime[i] = true;
-        }
-
-        for (int i = 2; i * i <= n; i++) {
-            if (isPrime[i]) {
-                for (int j = i * i; j <= n; j += i) {
-                    isPrime[j] = false;
+        
+        boolean[] arr=new boolean[n+1];
+        
+        for(int i=2;i*i<=n;i++){
+            if(arr[i]==false) {
+                for (int k =i* i; k <= n; k += i) {
+                    arr[k]=true;
                 }
             }
         }
-
-        int primeCount = 0;
-        for (int i = 2; i <= n; i++) {
-            if (isPrime[i]) {
-                primeCount++;
+        int answer=0;
+        for (int i=2;i<arr.length;i++) {
+            if(arr[i]==false){
+                answer++;
             }
         }
-
-        return primeCount;
-    
+        return answer;
     }
 }
