@@ -8,7 +8,7 @@ class Solution {
                 double mx=diff*diff;
 
                 int result=0;
-                if(startY>=n/2.0){
+                if(startY>=n/2){
                     double num1=(n-startY)*(n-startY)+mx;
                    result=(int)(num1*4);
                 }else{
@@ -25,8 +25,9 @@ class Solution {
             }else if(ball[0]==startX){
                 double diff= Math.abs(ball[1]-startY)/2.0;
                 double mx=diff*diff;
+
                 int result=0;
-                if(startX>=m/2.0){
+                if(startX>=m/2){
                     double num1=(m-startX)*(m-startX)+mx;
                     result=(int)(num1*4);
 
@@ -64,6 +65,7 @@ class Solution {
                 list.add(min);
             }
         }
+        
 
         return list.stream().mapToInt(Integer::intValue).toArray();
     }
