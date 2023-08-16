@@ -1,55 +1,71 @@
-import java.util.Arrays;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 class Solution {
-    private static final Character O = 'O';
-    private static final Character X = 'X';
     public int solution(String[] board) {
-        Map<Character, Long> counts = Arrays.stream(board)
-                .flatMap(row -> row.chars()
-                        .mapToObj(word -> (char) word))
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        int xCount = counts.getOrDefault(X, 0L).intValue();
-        int oCount = counts.getOrDefault(O, 0L).intValue();
-
-        if (xCount > oCount || oCount - xCount > 1) {
-            return 0;
+        int answer = 1;
+        
+        int[] count = getCount(board);
+        
+        boolean o = false;
+        boolean x = false;
+        
+        for (int i = 0; i < board.length; i++) {
+            String s = board[i];
+            
+            if (s.equals("OOO")) {
+                o = true;
+            } else if (s.equals("XXX")) {
+                x = true;
+            }
+            
+            if (board[0].charAt(i) == board[1].charAt(i) && 
+                board[1].charAt(i) == board[2].charAt(i)) {
+ 
+                if (board[0].charAt(i) == 'O') {
+                    o = true;
+                } else if (board[0].charAt(i) == 'X') {
+                    x = true;
+                }
+            }
         }
-
-        boolean xWin = checkWin(board, X);
-        boolean oWin = checkWin(board, O);
-
-        if (xWin && oWin) {
-            return 0;
+        
+        if (board[0].charAt(0) == board[1].charAt(1) && 
+            board[1].charAt(1) == board[2].charAt(2) ||
+            board[0].charAt(2) == board[1].charAt(1) && 
+            board[1].charAt(1) == board[2].charAt(0)
+           ) {
+            
+            if (board[1].charAt(1) == 'O') {
+                o = true;
+            } else if (board[1].charAt(1) == 'X') {
+                x = true;
+            }
         }
-
-        if (xWin && oCount > xCount ||
-                oWin && xCount >= oCount) {
-            return 0;
+ 
+        if (count[0] == count[1]) {
+            if ((!o && !x) || (x && !o)) {
+                return 1;
+            }
+        } else if (count[0] == count[1] + 1) {
+            if ((!o && !x) || (o && !x)) {
+                return 1;
+            } 
         }
-
-        return 1;
+        
+        return 0;
     }
-
-    private boolean checkWin(String[] board, char symbol) {
-        for (int i = 0; i < 3; i++) {
-            if (board[i].charAt(0) == symbol && board[i].charAt(1) == symbol && board[i].charAt(2) == symbol) {
-                return true;
+    
+    private int[] getCount(String[] board) {
+        int[] count = new int[2];
+        
+        for (String s: board) {
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == 'O') {
+                    count[0]++;
+                } else if(s.charAt(i) == 'X'){
+                    count[1]++;
+                }
             }
         }
-
-        for (int i = 0; i < 3; i++) {
-            if (board[0].charAt(i) == symbol && board[1].charAt(i) == symbol && board[2].charAt(i) == symbol) {
-                return true;
-            }
-        }
-
-        if (board[0].charAt(0) == symbol && board[1].charAt(1) == symbol && board[2].charAt(2) == symbol) {
-            return true;
-        }
-
-        return board[0].charAt(2) == symbol && board[1].charAt(1) == symbol && board[2].charAt(0) == symbol;
+        
+        return count;
     }
 }
