@@ -1,66 +1,63 @@
 import java.io.*;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class Main {
+class Main {
 
-    static int MAX=1000+10;
-    static boolean [][] map;
-    static int M,N;
-
-    static int[] dirY={1,-1,0,0};
-    static int[] dirX={0,0,1,-1};
-    static String answer;
-
+    static int M,N,K;
+    static boolean[][] maps;
+    static int[] dirX=new int[]{1,-1,0,0};
+    static int[] dirY=new int[]{0,0,1,-1};
+    static String result="NO";
     public static void main(String[] args) throws IOException {
         BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
-
-        StringTokenizer st= new StringTokenizer(br.readLine());
-
-        M=Integer.parseInt(st.nextToken());
-        N=Integer.parseInt(st.nextToken());
-
-        map=new boolean[MAX][MAX];
-
-        for(int i=1;i<=M;i++){
-            String next=br.readLine();
-            String[] check = next.split("");
-            for(int k=1;k<=N;k++){
-                if(check[k-1].equals("0")) {
-                    map[i][k] = true;
+        StringTokenizer st=new StringTokenizer(br.readLine());
+        
+        int M=Integer.parseInt(st.nextToken());
+        int N=Integer.parseInt(st.nextToken());
+        
+        maps=new boolean[M][N];
+        for(int i=0;i<M;i++){
+            String ele=br.readLine();
+            for(int k=0;k<ele.length();k++){
+                if(ele.charAt(k)=='0'){
+                    maps[i][k]=true;
+                }else{
+                    maps[i][k]=false;
                 }
             }
         }
-        answer="NO";
-        for(int i=1;i<=N;i++){
-            if(map[1][i]==true){
-                dfs(1,i);
+
+
+        for (int k = 0; k < maps[0].length; k++) {
+            if (maps[0][k]) {
+                maps[0][k] = false;
+                dfs(0, k);
             }
         }
 
-        bw.write(answer);
-
+        System.out.println(result);
         br.close();
-        bw.close();
     }
 
     private static void dfs(int y, int x) {
-        map[y][x]=false;
-
-        if(y==M){
-            answer="YES";
+        
+        if(y==maps.length-1){
+            result="YES";
             return;
         }
-
+        
         for(int i=0;i<4;i++){
-            int newy=y+dirY[i];
-            int newx=x+dirX[i];
-
-            if(map[newy][newx]){
-                dfs(newy,newx);
+            int newY=y+dirY[i];
+            int newX=x+dirX[i];
+            
+            if(newX<0||newY<0||newX>=maps[0].length||newY>=maps.length){
+                continue;
+            }
+            if(maps[newY][newX]){
+                maps[newY][newX]=false;
+                dfs(newY,newX);
             }
         }
-
     }
+
 }
