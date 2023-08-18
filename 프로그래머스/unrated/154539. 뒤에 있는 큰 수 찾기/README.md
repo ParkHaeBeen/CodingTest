@@ -1,10 +1,10 @@
 # [unrated] 뒤에 있는 큰 수 찾기 - 154539 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154539#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154539) 
 
 ### 성능 요약
 
-메모리: 158 MB, 시간: 21.35 ms
+메모리: 188 MB, 시간: 117.49 ms
 
 ### 구분
 
