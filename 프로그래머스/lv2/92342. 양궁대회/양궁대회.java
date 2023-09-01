@@ -40,8 +40,8 @@ class Solution {
             }
             return;
         }
-        
-        
+
+
         if(arrow>0&&peachInfo[idx]+1<=arrow){
             int needArrow=peachInfo[idx]+1;
             lionInfo[idx]=needArrow;
@@ -64,5 +64,5 @@ class Solution {
             getMaxDif(peach, lion, idx + 1, arrow);
         }
     }
-    
+
 }
