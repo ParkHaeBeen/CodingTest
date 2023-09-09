@@ -1,72 +1,69 @@
 import java.io.*;
 import java.util.*;
 
-public class Main{
-    static LinkedList<Position> con;
-    static String answer="sad";
-    static boolean[] visited;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int TC=Integer.parseInt(br.readLine());
-        StringBuilder sb=new StringBuilder();
-        while(TC-->0){
-            int n=Integer.parseInt(br.readLine());
+public class Main {
+   static int N,M;
+   public static void main(String[] args) throws IOException {
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       int T=Integer.parseInt(br.readLine());
 
-            StringTokenizer st=new StringTokenizer(br.readLine());
-            Position home=new Position(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+       while(T-->0){
+           N=Integer.parseInt(br.readLine());
+           StringTokenizer st = new StringTokenizer(br.readLine());
+           Point home=new Point(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
 
-            con=new LinkedList<>();
-            for(int i=0;i<n;i++){
-                st=new StringTokenizer(br.readLine());
-                con.add(new Position(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken())));
+           LinkedList<Point> con=new LinkedList<>();
+           con.add(home);
+           for(int i=0;i<N;i++){
+               st = new StringTokenizer(br.readLine());
+               con.add(new Point(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken())));
+           }
 
-            }
+           st = new StringTokenizer(br.readLine());
+           Point fes=new Point(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
 
-            st=new StringTokenizer(br.readLine());
-            Position fesitival=new Position(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken()));
+           getPossibleFes(con,home,fes,0);
+       }
+   }
 
-
-            Gofestival(home,fesitival);
-
-            System.out.println(answer);
-            answer="sad";
-        }
-
-        br.close();
-    }
-
-    private static void Gofestival(Position home, Position fesitival) {
-
-        ArrayDeque<Position> ad=new ArrayDeque<>();
-        ad.add(home);
-        visited=new boolean[con.size()+1];
-        while(!ad.isEmpty()){
-            Position conP = ad.pollFirst();
-            int distance = fesitival.getDistance(conP);
+    private static void getPossibleFes( LinkedList<Point> con, Point home, Point fes, int L) {
+       ArrayDeque<Point> conP=new ArrayDeque<>();
+       conP.add(home);
+       boolean [] visitied=new boolean[con.size()];
+       String result="sad";
+        while(!conP.isEmpty()){
+            Point nextCon = conP.pollFirst();
+            int distance = fes.getDistance(nextCon);
             if(distance<=1000){
-                answer="happy";
-                return;
+                result="happy";
+                break;
             }
-            for(int i=0;i<con.size();i++){
-                if(visited[i]==false&&con.get(i).getDistance(conP)<=1000){
-                    ad.add(con.get(i));
-                    visited[i]=true;
+
+            int idx=0;
+            for (Point point : con) {
+
+                if(visitied[idx]==false&&nextCon.getDistance(point)<=1000){
+                    conP.add(point);
+                    visitied[idx]=true;
                 }
+                idx++;
             }
         }
+
+        System.out.println(result);
 
     }
 }
 
-class Position{
-    int x, y;
+class Point{
+    int x,y;
 
-    public Position(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getDistance(Position con){
-        return Math.abs(this.x-con.x)+Math.abs(this.y-con.y);
+    public int getDistance(Point p){
+        return Math.abs(p.x-x)+Math.abs(p.y-y);
     }
 }
