@@ -1,60 +1,66 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-
-    static int N,answer;
-    static int[][] dir={{1,1},{1,-1},{-1,-1},{-1,1}};
-    public static void main(String[] args) throws IOException{
-        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+class Main {
+    static int N;
+    static int answer=0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N=Integer.parseInt(br.readLine());
 
-        boolean[][]ches=new boolean[N][N];
-        answer=0;
-        getQueenCount(0,ches,0);
+
+        for(int x=0;x<N;x++){
+            boolean[][] map=new boolean[N][N];
+            map[0][x]=true;
+            getQueen(map,1,0);
+        }
+
         System.out.println(answer);
         br.close();
     }
 
-    private static void getQueenCount(int queen,boolean[][] ches,int depth) {
-        if(queen==N){
+    private static void getQueen(boolean[][] map, int y,int cnt) {
+        if(y==N){
             answer++;
             return;
         }
-
         for(int i=0;i<N;i++){
-            if (getQueenCon(ches, i, depth)) {
-                ches[depth][i] = true;
-                getQueenCount(queen + 1, ches,depth+1);
-                ches[depth][i] = false;
+            if(possible(i,y,map)){
+                map[y][i]=true;
+                getQueen(map,y+1,cnt+1);
+                map[y][i]=false;
             }
         }
     }
 
-    private static boolean getQueenCon(boolean[][] ches, int i, int k) {
-        for(int h=0;h<N;h++){
-            if(ches[k][h]){
-                return false;
-            }
-
-            if(ches[h][i]){
+    private static boolean possible(int x, int y, boolean[][] map) {
+        //x축들 확인
+        for(int i=0;i<N;i++) {
+            if (map[i][x]) {
                 return false;
             }
         }
-
-        for (int[] ints : dir) {
-            if(i+ints[0]<0||i+ints[0]>=N||k+ints[1]<0||k+ints[1]>=N) continue;
-            int y=i+ints[0];
-            int x=k+ints[1];
-            while(x>0||x<N||y>0||y<N){
-                if(ches[x][y]) return false;
-                y+=ints[0];
-                x+=ints[1];
-
-                if(x<0||x>=N||y<0||y>=N){
-                    break;
-                }
+        //기울기 위로
+        int newX=x-1;
+        int newY=y-1;
+        while(true){
+            if(newX<0||newX>=N||newY<0||newY>=N) break;
+            if(map[newY][newX]){
+                return false;
             }
+            newX--;
+            newY--;
+        }
+
+        newX=x+1;
+        newY=y-1;
+        while(true){
+            if(newX<0||newX>=N||newY<0||newY>=N) break;
+            if(map[newY][newX]){
+                return false;
+            }
+            newX++;
+            newY--;
         }
 
         return true;
